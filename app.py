@@ -72,7 +72,7 @@ user_mood = st.selectbox(
 )
 
 # Tabs for different media types
-tab1, tab2 = st.columns(2)
+tab1, tab2, tab3 = st.columns(3)
 
 with tab1:
     st.header("Movies & Series")
@@ -121,6 +121,51 @@ with tab1:
                         st.write(result)
 
 with tab2:
+    st.header("Books")
+    search_language_books = st.multiselect(
+        "Preferred language(s):",
+        ["English", "Spanish", "French", "German", "Chinese", "Japanese", "Korean", "Other"],
+        key="search_language_books",
+        default=["English"],
+        help="Select the languages you prefer for the books."
+    )
+
+    story_premise_books = st.multiselect(
+        "Select story premises:",
+        ["❤️ Love", "🏞️ Adventure", "🔍 Mystery", "😱 Horror", "😂 Comedy", "🚀 Sci-Fi", "🧙‍♂️ Fantasy", "🔪 Thriller", "🎭 Drama", "🔥 Action"],
+        key="story_premise_books",
+        default=["❤️ Love", "🏞️ Adventure"],
+        help="Choose the themes you are interested in for books."
+    )
+
+    author = st.text_input(
+        "Favorite author (optional):",
+        key="author",
+        value=""
+    )
+
+    generate_books = st.button("Find", key="generate_books")
+    if generate_books:
+        prompt_books = f"""Find a book based on the following premise:\n
+            - User mood: {user_mood}\n
+            - Preferred language(s): {', '.join(search_language_books)}\n
+            - Story premises: {', '.join(story_premise_books)}\n
+            Please include the title and a brief description for each result."""
+        
+        with st.spinner("Finding books..."):
+            response_books = get_gemini_pro_text_response(
+                text_model_pro,
+                prompt_books,
+                generation_config={"temperature": 0.8, "max_output_tokens": 2048},
+            )
+            if response_books:
+                st.write("### Your books:")
+                results_books = response_books.split("\n")
+                for result in results_books:
+                    if result:
+                        st.write(result)
+
+with tab3:
     st.header("Custom Search")
     st.write("Use the space below to describe what you are looking for:")
     custom_prompt = st.text_area("Describe your custom search", height=150, key="custom_prompt")
