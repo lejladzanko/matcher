@@ -62,38 +62,11 @@ def get_gemini_pro_text_response(
     st.error("Service is currently unavailable. Please try again later.")
     return ""
 
-def get_gemini_pro_vision_response(
-    model, prompt_list, generation_config={}, stream: bool = True
-):
-    generation_config = {"temperature": 0.1, "max_output_tokens": 2048}
-    for _ in range(3):  # Retry up to 3 times
-        try:
-            responses = model.generate_content(
-                prompt_list, generation_config=generation_config, stream=stream
-            )
-            final_response = []
-            for response in responses:
-                try:
-                    final_response.append(response.text)
-                except IndexError:
-                    pass
-            return "".join(final_response)
-        except Exception as e:
-            st.warning(f"Attempt failed: {e}. Retrying...")
-            time.sleep(2)  # Wait before retrying
-    st.error("Service is currently unavailable. Please try again later.")
-    return ""
-
-def fetch_movie_poster(movie_title):
-    # Dummy function to simulate fetching a movie poster URL based on the title
-    # In real use case, you would use an API like OMDb or TMDb to get the actual poster URL
-    return "https://via.placeholder.com/300x450.png?text=Movie+Poster"
-
 # Streamlit UI
-st.markdown("<h1 style='text-align: center; color: #FFA500;'>Movie Database Finder</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #FFA500;'>StoryFinder</h1>", unsafe_allow_html=True)
 text_model_pro, multimodal_model_pro = load_models()
 
-st.write("**Movie Database Finder uses AI to search your favorite movies/series**")
+st.write("**StoryFinder uses AI to search your favorite books, movies, and series**")
 st.subheader("Search")
 
 # Mood check
@@ -105,8 +78,8 @@ user_mood = st.selectbox(
 
 # Search input
 search_type = st.radio(
-    "Select movies or series:",
-    ["Movies", "Series"],
+    "Select media type:",
+    ["Movies", "Series", "Books"],
     key="search_type",
     horizontal=True,
 )
@@ -133,9 +106,9 @@ story_premise = st.multiselect(
     default=["Love", "Adventure"],
 )
 
-director = st.text_input(
-    "Director (optional)",
-    key="director",
+director_author = st.text_input(
+    "Director/Author (optional)",
+    key="director_author",
     value=""
 )
 
@@ -153,9 +126,9 @@ release_year = st.slider(
     key="release_year"
 )
 
-actors = st.text_input(
-    "Favorite actor/actress (optional):",
-    key="actors",
+actors_characters = st.text_input(
+    "Favorite actor/actress or book character (optional):",
+    key="actors_characters",
     value=""
 )
 
@@ -167,10 +140,12 @@ search_type: {search_type}
 search_language: {", ".join(search_language)}
 search_location: {search_location}
 story_premise: {", ".join(story_premise)}
-director: {director}
+director_author: {director_author}
 length_of_story: {length_of_story}
 release_year: {release_year[0]}-{release_year[1]}
-actors: {actors}
+actors_characters: {actors_characters}
+
+Please include the title, a brief description, and if available, the URL for the poster image for each result.
 """
 
 config = {
@@ -178,18 +153,20 @@ config = {
     "max_output_tokens": 2048,
 }
 
-generate_t2t = st.button("Find my favorite movie/series", key="generate_t2t")
+generate_t2t = st.button("Find my favorite media", key="generate_t2t")
 if generate_t2t and prompt:
-    with st.spinner("Finding your favorite movie/series using Gemini 1.0 Pro ..."):
+    with st.spinner("Finding your favorite media using Gemini 1.0 Pro ..."):
         response = get_gemini_pro_text_response(
             text_model_pro,
             prompt,
             generation_config=config,
         )
         if response:
-            movie_title = response.split('\n')[0]  # Assuming the title is the first line of the response
-            poster_url = fetch_movie_poster(movie_title)
-            st.write("### Your movie/series:")
-            st.image(poster_url, width=300)
-            st.write(response)
-            
+            st.write("### Your media:")
+            results = response.split("\n")
+            for result in results:
+                if result:
+                    st.write(result)
+                    if "URL for the poster image" in result:
+                        poster_url = result.split("URL for the poster image: ")[-1]
+                        st.image(poster_url, width=300)
