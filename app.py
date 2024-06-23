@@ -70,18 +70,19 @@ text_model_pro, multimodal_model_pro = load_models()
 st.write("**Matcher uses AI to search your favorite books, movies, and series**")
 st.subheader("Search")
 
-# Mood check
-user_mood = st.selectbox(
-    "How are you feeling today?",
-    ["😊 Happy", "😢 Sad", "😃 Excited", "😌 Relaxed", "😐 Bored", "😟 Anxious"],
-    key="user_mood"
-)
-
 # Tabs for different media types
 tab1, tab2, tab3 = st.tabs(["🎬 Movies & Series", "📚 Books", "💡 Custom Search"])
 
 with tab1:
     st.header("Movies & Series")
+
+# Mood check
+    user_mood = st.selectbox(
+        "How are you feeling today?",
+        ["😊 Happy", "😢 Sad", "😃 Excited", "😌 Relaxed", "😐 Bored", "😟 Anxious"],
+        key="user_mood"
+    )
+
     search_type = st.radio(
         "Select media type:",
         ["Movies", "Series"],
@@ -197,6 +198,13 @@ with tab2:
         ["English", "Spanish", "French", "German", "Chinese", "Japanese", "Korean", "Other"],
         key="search_language_books",
         default=["English"]
+    )
+
+    # Mood check
+    user_mood = st.selectbox(
+        "How are you feeling today?",
+        ["😊 Happy", "😢 Sad", "😃 Excited", "😌 Relaxed", "😐 Bored", "😟 Anxious"],
+        key="user_mood"
     )
 
     search_location_books = st.text_input(
