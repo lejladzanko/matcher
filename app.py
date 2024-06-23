@@ -2,9 +2,10 @@ import streamlit as st
 from vertexai.generative_models import GenerativeModel, GenerationConfig, HarmBlockThreshold, HarmCategory
 import time
 
-PROJECT_ID = 'qwiklabs-asl-01-8d80f58bec85'
-LOCATION = 'us-east4'
-vertexai.init(project=PROJECT_ID, location=LOCATION)
+# Initialize Vertex AI (if applicable, replace with your specific initialization)
+# PROJECT_ID = 'your-project-id'
+# LOCATION = 'us-east4'
+# vertexai.init(project=PROJECT_ID, location=LOCATION)
 
 @st.cache_resource
 def load_models():
@@ -31,7 +32,7 @@ def get_gemini_pro_text_response(
         HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
     }
 
-    for _ in range(3):  
+    for _ in range(3):  # Retry up to 3 times
         try:
             responses = model.generate_content(
                 contents,
@@ -50,23 +51,27 @@ def get_gemini_pro_text_response(
             return " ".join(final_response)
         except Exception as e:
             st.warning(f"Attempt failed: {e}. Retrying...")
-            time.sleep(2) 
+            time.sleep(2)  # Wait before retrying
     st.error("Service is currently unavailable. Please try again later.")
     return ""
 
+# Streamlit UI
+st.markdown("<h1 style='text-align: center; color: #FF6347;'>🔍 Matcher App</h1>", unsafe_allow_html=True)
+st.write("Welcome to Matcher App, powered by AI to help you find your favorite books, movies, and series!")
+st.write("Choose your mood, preferences, and let Matcher suggest personalized recommendations.")
+st.write("---")
 
-st.markdown("<h1 style='text-align: center; color: #FF6347;'>Matcher 🔍</h1>", unsafe_allow_html=True)
+# Load models
 text_model_pro, multimodal_model_pro = load_models()
 
-st.write("**Matcher uses AI to search your favorite books, movies, and series**")
-st.subheader("Search")
-
+# Mood check
 user_mood = st.selectbox(
     "How are you feeling today?",
     ["😊 Happy", "😢 Sad", "😃 Excited", "😌 Relaxed", "😐 Bored", "😟 Anxious"],
     key="user_mood"
 )
 
+# Tabs for different media types
 tab1, tab2 = st.columns(2)
 
 with tab1:
