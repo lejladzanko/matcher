@@ -10,6 +10,7 @@ from vertexai.generative_models import (
 )
 import time
 
+# Initialize Vertex AI
 PROJECT_ID = 'qwiklabs-asl-01-8d80f58bec85'
 LOCATION = 'us-east4'
 vertexai.init(project=PROJECT_ID, location=LOCATION)
@@ -63,10 +64,10 @@ def get_gemini_pro_text_response(
     return ""
 
 # Streamlit UI
-st.markdown("<h1 style='text-align: center; color: #FFA500;'>StoryFinder</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #FF6347;'>Matcher 🔍</h1>", unsafe_allow_html=True)
 text_model_pro, multimodal_model_pro = load_models()
 
-st.write("**StoryFinder uses AI to search your favorite books, movies, and series**")
+st.write("**Matcher uses AI to search your favorite books, movies, and series**")
 st.subheader("Search")
 
 # Mood check
@@ -169,4 +170,5 @@ if generate_t2t and prompt:
                     st.write(result)
                     if "URL for the poster image" in result:
                         poster_url = result.split("URL for the poster image: ")[-1]
-                        st.image(poster_url, width=300)
+                        if poster_url:
+                            st.image(poster_url, width=300)
