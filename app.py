@@ -76,47 +76,47 @@ tab1, tab2, tab3 = st.columns(3)
 
 with tab1:
     st.header("Movies & Series")
-    search_type = st.radio(
+    search_type_movies = st.radio(
         "Select media type:",
         ["Movies", "Series"],
-        key="search_type",
+        key="search_type_movies",
         help="Choose whether you want to search for movies or series."
     )
 
-    search_language = st.multiselect(
+    search_language_movies = st.multiselect(
         "Preferred language(s):",
         ["English", "Spanish", "French", "German", "Chinese", "Japanese", "Korean", "Other"],
-        key="search_language",
+        key="search_language_movies",
         default=["English"],
         help="Select the languages you prefer for the media."
     )
 
-    story_premise = st.multiselect(
+    story_premise_movies = st.multiselect(
         "Select story premises:",
         ["❤️ Love", "🏞️ Adventure", "🔍 Mystery", "😱 Horror", "😂 Comedy", "🚀 Sci-Fi", "🧙‍♂️ Fantasy", "🔪 Thriller", "🎭 Drama", "🔥 Action"],
-        key="story_premise",
+        key="story_premise_movies",
         default=["❤️ Love", "🏞️ Adventure"],
         help="Choose the themes you are interested in."
     )
 
-    generate_t2t = st.button("Find", key="generate_t2t")
-    if generate_t2t:
-        prompt = f"""Find a {search_type.lower()} based on the following premise:\n
+    generate_movies = st.button("Find", key="generate_movies")
+    if generate_movies:
+        prompt_movies = f"""Find a {search_type_movies.lower()} based on the following premise:\n
             - User mood: {user_mood}\n
-            - Preferred language(s): {', '.join(search_language)}\n
-            - Story premises: {', '.join(story_premise)}\n
+            - Preferred language(s): {', '.join(search_language_movies)}\n
+            - Story premises: {', '.join(story_premise_movies)}\n
             Please include the title and a brief description for each result."""
         
-        with st.spinner(f"Finding {search_type.lower()}..."):
-            response = get_gemini_pro_text_response(
+        with st.spinner(f"Finding {search_type_movies.lower()}..."):
+            response_movies = get_gemini_pro_text_response(
                 text_model_pro,
-                prompt,
+                prompt_movies,
                 generation_config={"temperature": 0.8, "max_output_tokens": 2048},
             )
-            if response:
+            if response_movies:
                 st.write("### Your movie/series:")
-                results = response.split("\n")
-                for result in results:
+                results_movies = response_movies.split("\n")
+                for result in results_movies:
                     if result:
                         st.write(result)
 
@@ -136,12 +136,6 @@ with tab2:
         key="story_premise_books",
         default=["❤️ Love", "🏞️ Adventure"],
         help="Choose the themes you are interested in for books."
-    )
-
-    author = st.text_input(
-        "Favorite author (optional):",
-        key="author",
-        value=""
     )
 
     generate_books = st.button("Find", key="generate_books")
