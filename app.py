@@ -10,7 +10,6 @@ from vertexai.generative_models import (
 )
 import time
 
-# Initialize Vertex AI
 PROJECT_ID = 'qwiklabs-asl-01-8d80f58bec85'
 LOCATION = 'us-east4'
 vertexai.init(project=PROJECT_ID, location=LOCATION)
@@ -59,78 +58,90 @@ def get_gemini_pro_text_response(
             return " ".join(final_response)
         except Exception as e:
             st.warning(f"Attempt failed: {e}. Retrying...")
-            time.sleep(2)  # Wait before retrying
+            time.sleep(2)  
     st.error("Service is currently unavailable. Please try again later.")
     return ""
 
-# Streamlit UI
 st.markdown("<h1 style='text-align: center; color: #FF6347;'>Matcher 🔍</h1>", unsafe_allow_html=True)
 text_model_pro, multimodal_model_pro = load_models()
 
 st.write("**Matcher uses AI to search your favorite books, movies, and series**")
 st.subheader("Search")
 
-# Mood check
 user_mood = st.selectbox(
     "How are you feeling today?",
-    ["Happy", "Sad", "Excited", "Relaxed", "Bored", "Anxious"],
+    ["😊 Happy", "😢 Sad", "😃 Excited", "😌 Relaxed", "😐 Bored", "😟 Anxious"],
     key="user_mood"
 )
 
-# Search input
 search_type = st.radio(
     "Select media type:",
-    ["Movies", "Series", "Books"],
+    ["🎬 Movies", "📺 Series", "📚 Books"],
     key="search_type",
     horizontal=True,
 )
 
 search_language = st.multiselect(
-    "What language(s)?",
+    "Preferred language(s):",
     ["English", "Spanish", "French", "German", "Chinese", "Japanese", "Korean", "Other"],
     key="search_language",
+    default=["English"]
 )
 
 search_location = st.text_input(
-    "From which country?",
+    "Country of origin:",
     key="search_location",
-    value="Spain",
+    value="USA"
 )
 
 story_premise = st.multiselect(
-    "What is the story premise? (can select multiple)",
+    "Select story premises (multiple selections allowed):",
     [
-        "Love", "Adventure", "Mystery", "Horror", "Comedy",
-        "Sci-Fi", "Fantasy", "Thriller", "Drama", "Action"
+        "❤️ Love", "🏞️ Adventure", "🔍 Mystery", "😱 Horror", "😂 Comedy",
+        "🚀 Sci-Fi", "🧙‍♂️ Fantasy", "🔪 Thriller", "🎭 Drama", "🔥 Action"
     ],
     key="story_premise",
-    default=["Love", "Adventure"],
+    default=["❤️ Love", "🏞️ Adventure"]
 )
 
 director_author = st.text_input(
-    "Director/Author (optional)",
+    "Favorite director or author (optional):",
     key="director_author",
     value=""
 )
 
 length_of_story = st.radio(
-    "Select the length of the movie/series:",
-    ["Short", "Long"],
+    "Preferred length:",
+    ["🕒 Short", "📚 Long"],
     key="length_of_story",
     horizontal=True,
 )
 
-# Other prompt ideas
+
 release_year = st.slider(
-    "Select the release year:",
+    "Release year range:",
     min_value=1900, max_value=2024, value=(2000, 2024),
     key="release_year"
 )
 
 actors_characters = st.text_input(
-    "Favorite actor/actress or book character (optional):",
+    "Favorite actor, actress, or book character (optional):",
     key="actors_characters",
     value=""
+)
+
+favorite_genre = st.multiselect(
+    "Favorite genres (optional):",
+    ["Action", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"],
+    key="favorite_genre"
+)
+
+time_period = st.radio(
+    "Preferred time period:",
+    ["Past", "Present", "Future"],
+    key="time_period",
+    horizontal=True,
+    index=1
 )
 
 max_output_tokens = 2048
@@ -145,8 +156,10 @@ director_author: {director_author}
 length_of_story: {length_of_story}
 release_year: {release_year[0]}-{release_year[1]}
 actors_characters: {actors_characters}
+favorite_genre: {", ".join(favorite_genre)}
+time_period: {time_period}
 
-Please include the title, a brief description, and if available, the URL for the poster image for each result.
+Please include the title and a brief description for each result.
 """
 
 config = {
@@ -168,7 +181,3 @@ if generate_t2t and prompt:
             for result in results:
                 if result:
                     st.write(result)
-                    if "URL for the poster image" in result:
-                        poster_url = result.split("URL for the poster image: ")[-1]
-                        if poster_url:
-                            st.image(poster_url, width=300)
