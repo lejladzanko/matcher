@@ -1,169 +1,116 @@
-# Generative AI
+# Cloud Run application utilizing Streamlit Framework that demonstrates working with Vertex AI Gemini API
 
-Welcome to the Google Cloud [Generative AI](https://cloud.google.com/ai/generative-ai) repository.
+|           |                                                |
+| --------- | ---------------------------------------------- |
+| Author(s) | [Lavi Nigam](https://github.com/lavinigam-gcp) |
 
-<a href="gemini"><img src="https://lh3.googleusercontent.com/eDr6pYKs1tT0iK0nt3pPhvVlP2Wn96fbGqbWgBAARRZ7isej037g_tWobjV8zQkxOsWzJuEH8p-fksczXUOeqxGZZIo_HUCdkn8q-a4fuwATD7Q9Xrs=w2456-l100-sg-rj-c0xffffff" style="width:35em"></a>
+This application demonstrates a Cloud Run application that uses the [Streamlit](https://streamlit.io/) framework.
 
-This repository contains notebooks, code samples, sample apps, and other resources that demonstrate how to use, develop and manage generative AI workflows using [Generative AI on Google Cloud](https://cloud.google.com/ai/generative-ai), powered by [Vertex AI](https://cloud.google.com/vertex-ai).
+Sample screenshots and video demos of the application are shown below:
 
-For more Vertex AI samples, please visit the [Vertex AI samples GitHub repository](https://github.com/GoogleCloudPlatform/vertex-ai-samples/).
+## Application screenshots
 
-## Using this repository
+<img src="https://storage.googleapis.com/github-repo/img/gemini/sample-apps/gemini-streamlit-cloudrun/assets/gemini_pro_text.png" width="50%"/>
 
-[![Applied AI Summit: The cloud toolkit for generative AI](https://img.youtube.com/vi/xT7WW2SKLfE/hqdefault.jpg)](https://www.youtube.com/watch?v=xT7WW2SKLfE)
+## Run the Application locally (on Cloud Shell)
 
-<!-- markdownlint-disable MD033 -->
-<table>
+> NOTE: **Before you move forward, ensure that you have followed the instructions in [SETUP.md](../SETUP.md).**
+> Additionally, ensure that you have cloned this repository and you are currently in the `gemini-streamlit-cloudrun` folder. This should be your active working directory for the rest of the commands.
 
-  <tr>
-    <th></th>
-    <th style="text-align: center;">Description</th>
-    <th style="text-align: center;">Contents</th>
-  </tr>
-    <tr>
-    <td>
-      <img src="https://storage.googleapis.com/github-repo/img/gemini/Spark__Gradient_Alpha_100px.gif" width="45px">
-      <br>
-      <a href="gemini/"><code>gemini/</code></a>
-    </td>
-    <td>
-      Discover Gemini through starter notebooks, use cases, function calling, sample apps, and more.
-    </td>
-    <td><a href="gemini/">Sample notebooks, apps, use cases</a></td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://www.gstatic.com/images/branding/gcpiconscolors/service_discovery/v1/24px.svg" width="40px">
-      <br>
-      <a href="search/"><code>search/</code></a>
-    </td>
-    <td>Use this folder if you're interested in using <a href="https://cloud.google.com/enterprise-search">Vertex AI Search</a>, a Google-managed solution to help you rapidly build search engines for websites and across enterprise data. (Formerly known as Enterprise Search on Generative AI App Builder)</td>
-    <td><a href="search">Sample apps, use cases</a></td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://www.gstatic.com/images/branding/gcpiconscolors/dialogflow_cx/v1/24px.svg" width="40px">
-      <br>
-      <a href="conversation/"><code>conversation/</code></a>
-    </td>
-    <td>Use this folder if you're interested in using <a href="https://cloud.google.com/generative-ai-app-builder">Vertex AI Conversation</a>, a Google-managed solution to help you rapidly build chat bots for websites and across enterprise data. (Formerly known as Chat Apps on Generative AI App Builder)</td>
-    <td><a href="conversation">Sample apps, use cases</a></td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_note/default/40px.svg">
-      <br>
-      <a href="language/"><code>language/</code></a>
-    </td>
-    <td>
-      Use this folder if you're interested in building your own solutions from scratch using Google's language foundation models (Vertex AI PaLM API).
-      <ul>
-        <li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/language-model-overview#palm-api"><code>text-bison</code></a> model</li>
-        <li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/language-model-overview#palm-api"><code>chat-bison</code></a> model</li>
-        <li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/language-model-overview#palm-api"><code>textembedding-gecko</code></a> model</li>
-        <li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/code/code-models-overview"><code>code-bison</code></a> model</li>
-        <li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/code/code-models-overview"><code>code-gecko</code></a> model</li>
-        <li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/code/code-models-overview"><code>codechat-bison</code></a> model</li>
-        <li>prompt design</li>
-        <li>deploying apps</li>
-        <li>tuning models</li>
-        <li>grounded responses</li>
-        <li><a href="https://www.langchain.com/">langchain</a> with Google's foundation models</li>
-      </ul>
-    </td>
-    <td><a href="language">Sample notebooks, apps, use cases</a></td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/image/default/40px.svg">
-      <br>
-      <a href="vision/"><code>vision/</code></a>
-    </td>
-    <td>
-      Use this folder if you're interested in building your own solutions from scratch using features from Imagen on Vertex AI (Vertex AI Imagen API).
-      These are the features that Imagen on Vertex AI offers:
-      <ul>
-        <li>Image generation</li>
-        <li>Image editing</li>
-        <li>Visual captioning</li>
-        <li>Visual question answering</li>
-      </ul>
-    </td>
-    <td><a href="vision/">Sample notebooks, apps, use cases</a></td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/mic/default/40px.svg">
-      <br>
-      <a href="speech/"><code>speech/</code></a>
-    </td>
-    <td>
-      Use this folder if you're interested in building your own solutions from scratch using features from Chirp, a version of Google's Universal Speech Model (USM) on Vertex AI (Vertex AI Chirp API).
-    </td>
-    <td><a href="speech/">Sample notebooks, apps, use cases</a></td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/build/default/40px.svg">
-      <br>
-      <a href="setup-env/"><code>setup-env/</code></a>
-    </td>
-    <td>Instructions on how to set up Google Cloud, the Vertex AI Python SDK, and notebook environments on Google Colab and Vertex AI Workbench.</td>
-    <td><a href="setup-env">Setup instructions</a></td>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/media_link/default/40px.svg">
-      <br>
-      <a href="RESOURCES.md"><code>RESOURCES.md</code></a>
-    </td>
-    <td>Learning resources (e.g. blogs, YouTube playlists) about Generative AI on Google Cloud</td>
-    <td><a href="RESOURCES.md">Resources (e.g. videos, blogposts, learning paths)</a></td>
-  </tr>
-</table>
-<!-- markdownlint-enable MD033 -->
+To run the Streamlit Application locally (on cloud shell), we need to perform the following steps:
 
-## Related Repositories
+1. Setup the Python virtual environment and install the dependencies:
 
-- [Google Cloud Applied AI Engineering](https://github.com/GoogleCloudPlatform/applied-ai-engineering-samples)
-- [Generative AI for Marketing using Google Cloud](https://github.com/GoogleCloudPlatform/genai-for-marketing)
-- [Generative AI for Developer Productivity](https://github.com/GoogleCloudPlatform/genai-for-developers)
-- Vertex AI Core
-  - [Vertex AI Samples](https://github.com/GoogleCloudPlatform/vertex-ai-samples)
-  - [MLOps with Vertex AI](https://github.com/GoogleCloudPlatform/mlops-with-vertex-ai)
-  - [Developing NLP solutions with T5X and Vertex AI](https://github.com/GoogleCloudPlatform/t5x-on-vertex-ai)
-  - [AlphaFold batch inference with Vertex AI Pipelines](https://github.com/GoogleCloudPlatform/vertex-ai-alphafold-inference-pipeline)
-  - [Serving Spark ML models using Vertex AI](https://github.com/GoogleCloudPlatform/vertex-ai-spark-ml-serving)
-  - [Sensitive Data Protection (Cloud DLP) for Vertex AI Generative Models (PaLM2)](https://github.com/GoogleCloudPlatform/Sensitive-Data-Protection-for-Vertex-AI-PaLM2)
-- Conversational AI
-  - [Contact Center AI Samples](https://github.com/GoogleCloudPlatform/contact-center-ai-samples)
-  - [Reimagining Customer Experience 360](https://github.com/GoogleCloudPlatform/dialogflow-ccai-omnichannel)
-- Document AI
-  - [Document AI Samples](https://github.com/GoogleCloudPlatform/document-ai-samples)
-- Duet AI
-  - [Cymbal Superstore](https://github.com/GoogleCloudPlatform/cymbal-superstore)
-- Cloud Databases
-  - [GenAI Databases Retrieval App](https://github.com/GoogleCloudPlatform/genai-databases-retrieval-app)
-- Other
-  - [ai-on-gke](https://github.com/GoogleCloudPlatform/ai-on-gke)
-  - [ai-infra-cluster-provisioning](https://github.com/GoogleCloudPlatform/ai-infra-cluster-provisioning)
-  - [solutions-genai-llm-workshop](https://github.com/GoogleCloudPlatform/solutions-genai-llm-workshop)
-  - [terraform-genai-doc-summarization](https://github.com/GoogleCloudPlatform/terraform-genai-doc-summarization)
-  - [terraform-genai-knowledge-base](https://github.com/GoogleCloudPlatform/terraform-genai-knowledge-base)
-  - [genai-product-catalog](https://github.com/GoogleCloudPlatform/genai-product-catalog)
-  - [solutionbuilder-terraform-genai-doc-summarization](https://github.com/GoogleCloudPlatform/solutionbuilder-terraform-genai-doc-summarization)
-  - [solutions-viai-edge-provisioning-configuration](https://github.com/GoogleCloudPlatform/solutions-viai-edge-provisioning-configuration)
-  - [mis-ai-accelerator](https://github.com/GoogleCloudPlatform/mis-ai-accelerator)
-  - [dataflow-opinion-analysis](https://github.com/GoogleCloudPlatform/dataflow-opinion-analysis)
+   In Cloud Shell, execute the following commands:
 
-## Contributing
+   ```bash
+   python3 -m venv gemini-streamlit
+   source gemini-streamlit/bin/activate
+   pip install -r requirements.txt
+   ```
 
-Contributions welcome! See the [Contributing Guide](https://github.com/GoogleCloudPlatform/generative-ai/blob/main/CONTRIBUTING.md).
+2. Your application requires access to two environment variables:
 
-## Getting help
+   - `GCP_PROJECT` : This the Google Cloud project ID.
+   - `GCP_REGION` : This is the region in which you are deploying your Cloud Run app. For e.g. us-central1.
 
-Please use the [issues page](https://github.com/GoogleCloudPlatform/generative-ai/issues) to provide suggestions, feedback or submit a bug report.
+   These variables are needed since the Vertex AI initialization needs the Google Cloud project ID and the region. The specific code line from the `app.py`
+   function is shown here:
+   `vertexai.init(project=PROJECT_ID, location=LOCATION)`
 
-## Disclaimer
+   In Cloud Shell, execute the following commands:
 
-This repository itself is not an officially supported Google product. The code in this repository is for demonstrative purposes only.
+   ```bash
+   export GCP_PROJECT='<Your GCP Project Id>'  # Change this
+   export GCP_REGION='us-central1'             # If you change this, make sure the region is supported.
+   ```
+
+3. To run the application locally, execute the following command:
+
+   In Cloud Shell, execute the following command:
+
+   ```bash
+   streamlit run app.py \
+     --browser.serverAddress=localhost \
+     --server.enableCORS=false \
+     --server.enableXsrfProtection=false \
+     --server.port 8080
+   ```
+
+The application will startup and you will be provided a URL to the application. Use Cloud Shell's [web preview](https://cloud.google.com/shell/docs/using-web-preview) function to launch the preview page. You may also visit that in the browser to view the application. Choose the functionality that you would like to check out and the application will prompt the Vertex AI Gemini API and display the responses.
+
+## Build and Deploy the Application to Cloud Run
+
+> NOTE: **Before you move forward, ensure that you have followed the instructions in [SETUP.md](../SETUP.md).**
+> Additionally, ensure that you have cloned this repository and you are currently in the `gemini-streamlit-cloudrun` folder. This should be your active working directory for the rest of the commands.
+
+To deploy the Streamlit Application in [Cloud Run](https://cloud.google.com/run/docs/quickstarts/deploy-container), we need to perform the following steps:
+
+1. Your Cloud Run app requires access to two environment variables:
+
+   - `GCP_PROJECT` : This the Google Cloud project ID.
+   - `GCP_REGION` : This is the region in which you are deploying your Cloud Run app. For e.g. us-central1.
+
+   These variables are needed since the Vertex AI initialization needs the Google Cloud project ID and the region. The specific code line from the `app.py`
+   function is shown here:
+   `vertexai.init(project=PROJECT_ID, location=LOCATION)`
+
+   In Cloud Shell, execute the following commands:
+
+   ```bash
+   export GCP_PROJECT='<Your GCP Project Id>'  # Change this
+   export GCP_REGION='us-central1'             # If you change this, make sure the region is supported.
+   ```
+
+2. Now you can build the Docker image for the application and push it to Artifact Registry. To do this, you will need one environment variable set that will point to the Artifact Registry name. Included in the script below is a command that will create this Artifact Registry repository for you.
+
+   In Cloud Shell, execute the following commands:
+
+   ```bash
+   export AR_REPO='<REPLACE_WITH_YOUR_AR_REPO_NAME>'  # Change this
+   export SERVICE_NAME='gemini-streamlit-app' # This is the name of our Application and Cloud Run service. Change it if you'd like.
+
+   #make sure you are in the active directory for 'gemini-streamlit-cloudrun'
+   gcloud artifacts repositories create "$AR_REPO" --location="$GCP_REGION" --repository-format=Docker
+   gcloud auth configure-docker "$GCP_REGION-docker.pkg.dev"
+   gcloud builds submit --tag "$GCP_REGION-docker.pkg.dev/$GCP_PROJECT/$AR_REPO/$SERVICE_NAME"
+   ```
+
+3. The final step is to deploy the service in Cloud Run with the image that we had built and had pushed to the Artifact Registry in the previous step:
+
+   In Cloud Shell, execute the following command:
+
+   ```bash
+   gcloud run deploy "$SERVICE_NAME" \
+     --port=8080 \
+     --image="$GCP_REGION-docker.pkg.dev/$GCP_PROJECT/$AR_REPO/$SERVICE_NAME" \
+     --allow-unauthenticated \
+     --region=$GCP_REGION \
+     --platform=managed  \
+     --project=$GCP_PROJECT \
+     --set-env-vars=GCP_PROJECT=$GCP_PROJECT,GCP_REGION=$GCP_REGION
+   ```
+
+On successful deployment, you will be provided a URL to the Cloud Run service. You can visit that in the browser to view the Cloud Run application that you just deployed. Choose the functionality that you would like to check out and the application will prompt the Vertex AI Gemini API and display the responses.
+
+Congratulations!
