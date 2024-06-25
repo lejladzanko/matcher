@@ -40,7 +40,7 @@ def get_gemini_pro_text_response(
         HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
     }
 
-    for _ in range(3):  # Retry up to 3 times
+    for attempt in range(3):  # Retry up to 3 times
         try:
             responses = model.generate_content(
                 contents,
@@ -58,7 +58,7 @@ def get_gemini_pro_text_response(
                     continue
             return " ".join(final_response)
         except Exception as e:
-            st.warning(f"Attempt failed: {e}. Retrying...")
+            st.warning(f"Attempt {attempt + 1} failed: {e}. Retrying...")
             time.sleep(2)  # Wait before retrying
     st.error("Service is currently unavailable. Please try again later.")
     return ""
@@ -77,15 +77,6 @@ user_mood = st.selectbox(
     key="user_mood"
 )
 
-# Age filter
-age_group = st.radio(
-    "Select age group:",
-    ["Children", "Teens", "Adults"],
-    key="age_group",
-    horizontal=True,
-    index=2
-)
-
 # Tabs for different media types
 tab1, tab2, tab3 = st.tabs(["🎬 Movies & Series", "📚 Books", "💡 Custom Search"])
 
@@ -96,6 +87,12 @@ with tab1:
         ["Movies", "Series"],
         key="search_type",
         horizontal=True,
+    )
+
+    age_group = st.selectbox(
+        "Select age group:",
+        ["Children", "Teens", "Adults"],
+        key="age_group"
     )
 
     search_language = st.multiselect(
@@ -129,7 +126,7 @@ with tab1:
 
     length_of_story = st.radio(
         "Preferred length:",
-        ["🕒 Short (< 90 mins)", "📚 Long (> 90 mins)"],
+        ["🕒 Short (< 90 minutes)", "📚 Long (> 90 minutes)"],
         key="length_of_story",
         horizontal=True,
     )
@@ -144,6 +141,12 @@ with tab1:
         "Favorite actor or actress (optional):",
         key="actors_characters",
         value=""
+    )
+
+    favorite_genre = st.multiselect(
+        "Favorite genres (optional):",
+        ["Action", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"],
+        key="favorite_genre"
     )
 
     time_period = st.radio(
@@ -165,6 +168,7 @@ with tab1:
     length_of_story: {length_of_story}
     release_year: {release_year[0]}-{release_year[1]}
     actors_characters: {actors_characters}
+    favorite_genre: {", ".join(favorite_genre)}
     time_period: {time_period}
     Please include the title in bold, a brief description, and omit the URL for more information for each result.
     """
@@ -192,12 +196,13 @@ with tab1:
 with tab2:
     st.header("Books")
 
+    # Age group selection
     age_group_books = st.selectbox(
         "Select age group:",
         ["Children", "Teens", "Adults"],
         key="age_group_books"
     )
-    
+
     search_language_books = st.multiselect(
         "Preferred language(s):",
         ["English", "Spanish", "French", "German", "Chinese", "Japanese", "Korean", "Other"],
@@ -260,43 +265,21 @@ with tab2:
         index=1
     )
 
-    # Prompts for book recommendations
-    book_prompts = [
-        f"""Find a historical fiction book based on the following premise:
-        user_mood: {user_mood}
-        age_group: Adults
-        search_language: {", ".join(search_language_books)}
-        search_location: UK
-        story_premise: ❤️ Love, 🔍 Mystery
-        author: Ken Follett
-        length_of_story: 📚 Long (> 300 pages)
-        release_year: 1990-2024
-        characters_books: None
-        favorite_genre: Drama, Romance
-        time_period: Past
-        Please include the title in bold, a brief description, and omit the URL for more information for each result.
-        """,
-        f"""Find a fantasy adventure book based on the following premise:
-        user_mood: {user_mood}
-        age_group: Teens
-        search_language: English
-        search_location: USA
-        story_premise: 🧙‍♂️ Fantasy, 🏞️ Adventure
-        author: J.K. Rowling
-        length_of_story: 📚 Long (> 300 pages)
-        release_year: 2000-2024
-        characters_books: Harry Potter
-        favorite_genre: Fantasy, Adventure
-        time_period: Past
-        Please include the title in bold, a brief description, and omit the URL for more information for each result.
-        """
-    ]
-
-    prompt_books = st.selectbox(
-        "Choose a prompt for book recommendations:",
-        options=book_prompts,
-        key="prompt_books"
-    )
+    # Prompt for book recommendations
+    prompt_books = f"""Find a book based on the following premise:
+    user_mood: {user_mood}
+    age_group: {age_group_books}
+    search_language: {", ".join(search_language_books)}
+    search_location: {search_location_books}
+    story_premise: {", ".join(story_premise_books)}
+    author: {author}
+    length_of_story: {length_of_story_books}
+    release_year: {release_year_books[0]}-{release_year_books[1]}
+    characters_books: {characters_books}
+    favorite_genre: {", ".join(favorite_genre_books)}
+    time_period: {time_period_books}
+    Please include the title in bold, a brief description, and omit the URL for more information for each result.
+    """
 
     generate_books = st.button("Find my favorite book", key="generate_books")
     if generate_books and prompt_books:
