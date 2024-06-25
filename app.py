@@ -1,12 +1,5 @@
 import streamlit as st
-import vertexai
-from vertexai.generative_models import (
-    GenerationConfig,
-    GenerativeModel,
-    HarmBlockThreshold,
-    HarmCategory,
-    Part,
-)
+from vertexai.generative_models import GenerativeModel, GenerationConfig, HarmBlockThreshold, HarmCategory
 import time
 
 # Initialize Vertex AI
@@ -26,12 +19,7 @@ def load_models():
     multimodal_model_pro = GenerativeModel("gemini-1.0-pro-vision")
     return text_model_pro, multimodal_model_pro
 
-def get_gemini_pro_text_response(
-    model: GenerativeModel,
-    contents: str,
-    generation_config: GenerationConfig,
-    stream: bool = True,
-):
+def get_gemini_pro_text_response(model: GenerativeModel, contents: str, generation_config: GenerationConfig, stream: bool = True):
     safety_settings = {
         HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_NONE,
         HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_NONE,
@@ -41,13 +29,7 @@ def get_gemini_pro_text_response(
 
     for attempt in range(3):  # Retry up to 3 times
         try:
-            responses = model.generate_content(
-                contents,
-                generation_config=generation_config,
-                safety_settings=safety_settings,
-                stream=stream,
-            )
-
+            responses = model.generate_content(contents, generation_config=generation_config, safety_settings=safety_settings, stream=stream)
             final_response = []
             for response in responses:
                 try:
@@ -181,12 +163,12 @@ with tab1:
                 st.subheader("Results:")
                 results = response.split("\n")
                 match_found = False
-                for idx, result in enumerate(results, start=1):
+                for result in results:
                     if result:
                         if not match_found:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found = True
-                        st.markdown(f"**{idx}. {result}**")
+                        st.write(result)
 
 with tab2:
     st.header("Books")
@@ -285,12 +267,12 @@ with tab2:
                 st.subheader("Results:")
                 results_books = response_books.split("\n")
                 match_found_books = False
-                for idx, result_books in enumerate(results_books, start=1):
+                for result_books in results_books:
                     if result_books:
                         if not match_found_books:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found_books = True
-                        st.markdown(f"**{idx}. {result_books}**")
+                        st.write(result_books)
 
 with tab3:
     st.header("Custom Search")
