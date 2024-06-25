@@ -282,5 +282,21 @@ with tab2:
 
     with tab3:
         st.header("Custom Search")
-    st.write("Enter your custom search criteria here:")
-    custom_search_text = st.text_area("Custom Search Criteria")
+    st.write("Use the space below to describe what you are looking for:")
+    custom_prompt = st.text_area("Describe your custom search", height=150, key="custom_prompt", placeholder="Enter your custom search prompt here...")
+
+    generate_custom = st.button("Generate Custom Search", key="generate_custom")
+    if generate_custom and custom_prompt.strip():
+        with st.spinner("Generating results..."):
+            response_custom = get_gemini_pro_text_response(
+                text_model_pro,
+                custom_prompt,
+                generation_config={"temperature": 0.8, "max_output_tokens": 2048},
+            )
+            if response_custom:
+                st.write("### Your custom search results:")
+                results_custom = response_custom.split("\n")
+                for result in results_custom:
+                    if result:
+                        st.write(result)
+                 
