@@ -77,7 +77,7 @@ user_mood = st.selectbox(
 )
 
 # Tabs for different media types
-tab1, tab2, tab3 = st.columns(3)
+tab1, tab2, tab3 = st.tabs(["🎬 Movies & Series", "📚 Books", "💡 Custom Search"])
 
 with tab1:
     st.header("Movies & Series")
@@ -181,12 +181,18 @@ with tab1:
                 st.subheader("Results:")
                 results = response.split("\n")
                 match_found = False
-                for result in results:
+                for idx, result in enumerate(results, start=1):
                     if result:
                         if not match_found:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found = True
-                        st.markdown(f"**{result}**")
+                        st.markdown(f"**{idx}. {result}**", unsafe_allow_html=True)
+                        st.markdown("***This is a description of the movie. (90 minutes)***")
+
+                        # Add some color to the description
+                        st.markdown("<span style='color: #1E90FF;'>This is a description of the movie.</span>")
+
+                        # Example: st.markdown("<span style='color: #1E90FF;'>This is a description of the movie.</span>")
 
 with tab2:
     st.header("Books")
@@ -285,13 +291,13 @@ with tab2:
                 st.subheader("Results:")
                 results_books = response_books.split("\n")
                 match_found_books = False
-                for result_books in results_books:
+                for idx, result_books in enumerate(results_books, start=1):
                     if result_books:
                         if not match_found_books:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found_books = True
-                        st.markdown(f"**{result_books}**")
+                        st.markdown(f"**{idx}. {result_books}**", unsafe_allow_html=True)
+                        st.markdown("***This is a description of the book. (300 pages)***")
 
-with tab3:
-    st.header("Custom Search")
-    st.write("Customize your search criteria here.")
+                        # Add some color to the description
+                        st.markdown("<span style='color: #1E90FF;'>This is a description of the book.</span>")
