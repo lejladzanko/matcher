@@ -187,7 +187,6 @@ with tab1:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found = True
                         st.markdown(f"**{idx}. {result}**")
-                        st.write("This is a description of the movie.")
 
 with tab2:
     st.header("Books")
@@ -292,7 +291,6 @@ with tab2:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found_books = True
                         st.markdown(f"**{idx}. {result_books}**")
-                        st.write("This is a description of the book.")
 
 with tab3:
     st.header("Custom Search")
