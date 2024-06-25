@@ -1,7 +1,13 @@
 import streamlit as st
-from vertexai.generative_models import GenerativeModel, GenerationConfig, HarmBlockThreshold, HarmCategory
+import vertexai
+from vertexai.generative_models import (
+    GenerationConfig,
+    GenerativeModel,
+    HarmBlockThreshold,
+    HarmCategory,
+    Part,
+)
 import time
-
 # Initialize Vertex AI
 PROJECT_ID = 'qwiklabs-asl-01-8d80f58bec85'
 LOCATION = 'us-east4'
