@@ -77,7 +77,7 @@ user_mood = st.selectbox(
 )
 
 # Tabs for different media types
-tab1, tab2, tab3 = st.columns(3)
+tab1, tab2, tab3 = st.tabs(["🎬 Movies & Series", "📚 Books", "💡 Custom Search"])
 
 with tab1:
     st.header("Movies & Series")
