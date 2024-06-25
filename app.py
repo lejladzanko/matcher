@@ -280,6 +280,7 @@ with tab2:
                             match_found_books = True
                         st.write(result_books)
 
-with tab3:
-    st.header("Custom Search")
-    st.write("Customize your search criteria here.")
+    with tab3:
+        st.header("Custom Search")
+    st.write("Enter your custom search criteria here:")
+    custom_search_text = st.text_area("Custom Search Criteria")
