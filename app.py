@@ -280,8 +280,8 @@ with tab2:
                             match_found_books = True
                         st.write(result_books)
 
-    with tab3:
-        st.header("Custom Search")
+with tab3:
+    st.header("Custom Search")
     st.write("Use the space below to describe what you are looking for:")
     custom_prompt = st.text_area("Describe your custom search", height=150, key="custom_prompt", placeholder="Enter your custom search prompt here...")
 
@@ -299,4 +299,4 @@ with tab2:
                 for result in results_custom:
                     if result:
                         st.write(result)
-                 
+
