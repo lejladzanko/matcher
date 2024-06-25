@@ -77,6 +77,15 @@ user_mood = st.selectbox(
     key="user_mood"
 )
 
+# Age filter
+age_group = st.radio(
+    "Select age group:",
+    ["Children", "Teens", "Adults"],
+    key="age_group",
+    horizontal=True,
+    index=2
+)
+
 # Tabs for different media types
 tab1, tab2, tab3 = st.tabs(["🎬 Movies & Series", "📚 Books", "💡 Custom Search"])
 
@@ -120,7 +129,7 @@ with tab1:
 
     length_of_story = st.radio(
         "Preferred length:",
-        ["🕒 Short", "📚 Long"],
+        ["🕒 Short (< 90 mins)", "📚 Long (> 90 mins)"],
         key="length_of_story",
         horizontal=True,
     )
@@ -137,12 +146,6 @@ with tab1:
         value=""
     )
 
-    favorite_genre = st.multiselect(
-        "Favorite genres (optional):",
-        ["Action", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"],
-        key="favorite_genre"
-    )
-
     time_period = st.radio(
         "Preferred time period:",
         ["Past", "Present", "Future"],
@@ -153,6 +156,7 @@ with tab1:
 
     prompt = f"""Find a {search_type} based on the following premise:
     user_mood: {user_mood}
+    age_group: {age_group}
     search_type: {search_type}
     search_language: {", ".join(search_language)}
     search_location: {search_location}
@@ -161,9 +165,8 @@ with tab1:
     length_of_story: {length_of_story}
     release_year: {release_year[0]}-{release_year[1]}
     actors_characters: {actors_characters}
-    favorite_genre: {", ".join(favorite_genre)}
     time_period: {time_period}
-    Please include the title, a brief description, and the URL for more information for each result.
+    Please include the title in bold, a brief description, and omit the URL for more information for each result.
     """
 
     config = {
@@ -184,14 +187,17 @@ with tab1:
                 results = response.split("\n")
                 for result in results:
                     if result:
-                        st.write(result)
-                        if "URL for more information" in result:
-                            url = result.split("URL for more information: ")[-1]
-                            if url:
-                                st.markdown(f"[More Information]({url})", unsafe_allow_html=True)
+                        st.write(f"**You have a match**: {result}")
 
 with tab2:
     st.header("Books")
+
+    age_group_books = st.selectbox(
+        "Select age group:",
+        ["Children", "Teens", "Adults"],
+        key="age_group_books"
+    )
+    
     search_language_books = st.multiselect(
         "Preferred language(s):",
         ["English", "Spanish", "French", "German", "Chinese", "Japanese", "Korean", "Other"],
@@ -223,7 +229,7 @@ with tab2:
 
     length_of_story_books = st.radio(
         "Preferred length:",
-        ["🕒 Short", "📚 Long"],
+        ["🕒 Short (< 300 pages)", "📚 Long (> 300 pages)"],
         key="length_of_story_books",
         horizontal=True,
     )
@@ -254,19 +260,43 @@ with tab2:
         index=1
     )
 
-    prompt_books = f"""Find a book based on the following premise:
-    user_mood: {user_mood}
-    search_language: {", ".join(search_language_books)}
-    search_location: {search_location_books}
-    story_premise: {", ".join(story_premise_books)}
-    author: {author}
-    length_of_story: {length_of_story_books}
-    release_year: {release_year_books[0]}-{release_year_books[1]}
-    characters_books: {characters_books}
-    favorite_genre: {", ".join(favorite_genre_books)}
-    time_period: {time_period_books}
-    Please include the title, a brief description, and the URL for more information for each result.
-    """
+    # Prompts for book recommendations
+    book_prompts = [
+        f"""Find a historical fiction book based on the following premise:
+        user_mood: {user_mood}
+        age_group: Adults
+        search_language: {", ".join(search_language_books)}
+        search_location: UK
+        story_premise: ❤️ Love, 🔍 Mystery
+        author: Ken Follett
+        length_of_story: 📚 Long (> 300 pages)
+        release_year: 1990-2024
+        characters_books: None
+        favorite_genre: Drama, Romance
+        time_period: Past
+        Please include the title in bold, a brief description, and omit the URL for more information for each result.
+        """,
+        f"""Find a fantasy adventure book based on the following premise:
+        user_mood: {user_mood}
+        age_group: Teens
+        search_language: English
+        search_location: USA
+        story_premise: 🧙‍♂️ Fantasy, 🏞️ Adventure
+        author: J.K. Rowling
+        length_of_story: 📚 Long (> 300 pages)
+        release_year: 2000-2024
+        characters_books: Harry Potter
+        favorite_genre: Fantasy, Adventure
+        time_period: Past
+        Please include the title in bold, a brief description, and omit the URL for more information for each result.
+        """
+    ]
+
+    prompt_books = st.selectbox(
+        "Choose a prompt for book recommendations:",
+        options=book_prompts,
+        key="prompt_books"
+    )
 
     generate_books = st.button("Find my favorite book", key="generate_books")
     if generate_books and prompt_books:
@@ -281,11 +311,7 @@ with tab2:
                 results_books = response_books.split("\n")
                 for result in results_books:
                     if result:
-                        st.write(result)
-                        if "URL for more information" in result:
-                            url_books = result.split("URL for more information: ")[-1]
-                            if url_books:
-                                st.markdown(f"[More Information]({url_books})", unsafe_allow_html=True)
+                        st.write(f"**You have a match**: {result}")
 
 with tab3:
     st.header("Custom Search")
@@ -305,9 +331,4 @@ with tab3:
                 results_custom = response_custom.split("\n")
                 for result in results_custom:
                     if result:
-                        st.write(result)
-                        if "URL for more information" in result:
-                            url_custom = result.split("URL for more information: ")[-1]
-                            if url_custom:
-                                st.markdown(f"[More Information]({url_custom})", unsafe_allow_html=True)
-
+                        st.write(f"**You have a match**: {result}")
