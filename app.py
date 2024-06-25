@@ -265,7 +265,6 @@ with tab2:
     length_of_story_books: {length_of_story_books}
     release_year_books: {release_year_books[0]}-{release_year_books[1]}
     characters_books: {characters_books}
-    favorite_genre_books: {", ".join(favorite_genre_books)}
     time_period_books: {time_period_books}
     """
 
