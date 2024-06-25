@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 import vertexai
 from vertexai.generative_models import (
@@ -78,7 +77,7 @@ user_mood = st.selectbox(
 )
 
 # Tabs for different media types
-tab1, tab2, tab3 = st.tabs(["🎬 Movies & Series", "📚 Books", "💡 Custom Search"])
+tab1, tab2, tab3 = st.columns(3)
 
 with tab1:
     st.header("Movies & Series")
@@ -187,11 +186,11 @@ with tab1:
                 generation_config=config,
             )
             if response:
-                st.write("### Your movie/series:")
+                st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                 results = response.split("\n")
                 for result in results:
                     if result:
-                        st.write(f"**You have a match**: {result}")
+                        st.markdown(f"### **{result}**")
 
 with tab2:
     st.header("Books")
@@ -290,11 +289,11 @@ with tab2:
                 generation_config=config,
             )
             if response_books:
-                st.write("### Your book:")
+                st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                 results_books = response_books.split("\n")
                 for result in results_books:
                     if result:
-                        st.write(f"**You have a match**: {result}")
+                        st.markdown(f"### **{result}**")
 
 with tab3:
     st.header("Custom Search")
@@ -310,8 +309,8 @@ with tab3:
                 generation_config={"temperature": 0.8, "max_output_tokens": 2048},
             )
             if response_custom:
-                st.write("### Your custom search results:")
+                st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                 results_custom = response_custom.split("\n")
                 for result in results_custom:
                     if result:
-                        st.write(f"**You have a match**: {result}")
+                        st.markdown(f"### **{result}**")
