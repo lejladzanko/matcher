@@ -77,7 +77,7 @@ user_mood = st.selectbox(
 )
 
 # Tabs for different media types
-tab1, tab2, tab3 = st.tabs(["🎬 Movies & Series", "📚 Books", "💡 Custom Search"])
+tab1, tab2, tab3 = st.columns(3)
 
 with tab1:
     st.header("Movies & Series")
@@ -186,7 +186,7 @@ with tab1:
                         if not match_found:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found = True
-                        st.markdown(f"### **{result}**")
+                        st.markdown(f"**{result}**")
 
 with tab2:
     st.header("Books")
@@ -290,9 +290,8 @@ with tab2:
                         if not match_found_books:
                             st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
                             match_found_books = True
-                        st.markdown(f"### **{result_books}**")
+                        st.markdown(f"**{result_books}**")
 
 with tab3:
     st.header("Custom Search")
     st.write("Customize your search criteria here.")
-
