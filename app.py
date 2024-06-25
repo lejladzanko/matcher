@@ -142,12 +142,6 @@ with tab1:
         value=""
     )
 
-    favorite_genre = st.multiselect(
-        "Favorite genres (optional):",
-        ["Action", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"],
-        key="favorite_genre"
-    )
-
     time_period = st.radio(
         "Preferred time period:",
         ["Past", "Present", "Future"],
@@ -167,9 +161,7 @@ with tab1:
     length_of_story: {length_of_story}
     release_year: {release_year[0]}-{release_year[1]}
     actors_characters: {actors_characters}
-    favorite_genre: {", ".join(favorite_genre)}
     time_period: {time_period}
-    Please include the title in bold, a brief description, and omit the URL for more information for each result.
     """
 
     config = {
@@ -254,12 +246,6 @@ with tab2:
         value=""
     )
 
-    favorite_genre_books = st.multiselect(
-        "Favorite genres (optional):",
-        ["Action", "Comedy", "Drama", "Fantasy", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"],
-        key="favorite_genre_books"
-    )
-
     time_period_books = st.radio(
         "Preferred time period:",
         ["Past", "Present", "Future"],
@@ -281,7 +267,6 @@ with tab2:
     characters_books: {characters_books}
     favorite_genre_books: {", ".join(favorite_genre_books)}
     time_period_books: {time_period_books}
-    Please include the title in bold, a brief description, and omit the URL for more information for each result.
     """
 
     config_books = {
