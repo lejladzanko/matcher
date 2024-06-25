@@ -186,10 +186,14 @@ with tab1:
                 generation_config=config,
             )
             if response:
-                st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
+                st.subheader("Results:")
                 results = response.split("\n")
+                match_found = False
                 for result in results:
                     if result:
+                        if not match_found:
+                            st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
+                            match_found = True
                         st.markdown(f"### **{result}**")
 
 with tab2:
@@ -267,18 +271,23 @@ with tab2:
     # Prompt for book recommendations
     prompt_books = f"""Find a book based on the following premise:
     user_mood: {user_mood}
-    age_group: {age_group_books}
-    search_language: {", ".join(search_language_books)}
-    search_location: {search_location_books}
-    story_premise: {", ".join(story_premise_books)}
+    age_group_books: {age_group_books}
+    search_language_books: {", ".join(search_language_books)}
+    search_location_books: {search_location_books}
+    story_premise_books: {", ".join(story_premise_books)}
     author: {author}
-    length_of_story: {length_of_story_books}
-    release_year: {release_year_books[0]}-{release_year_books[1]}
+    length_of_story_books: {length_of_story_books}
+    release_year_books: {release_year_books[0]}-{release_year_books[1]}
     characters_books: {characters_books}
-    favorite_genre: {", ".join(favorite_genre_books)}
-    time_period: {time_period_books}
+    favorite_genre_books: {", ".join(favorite_genre_books)}
+    time_period_books: {time_period_books}
     Please include the title in bold, a brief description, and omit the URL for more information for each result.
     """
+
+    config_books = {
+        "temperature": 0.8,
+        "max_output_tokens": 2048,
+    }
 
     generate_books = st.button("Find my favorite book", key="generate_books")
     if generate_books and prompt_books:
@@ -286,31 +295,20 @@ with tab2:
             response_books = get_gemini_pro_text_response(
                 text_model_pro,
                 prompt_books,
-                generation_config=config,
+                generation_config=config_books,
             )
             if response_books:
-                st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
+                st.subheader("Results:")
                 results_books = response_books.split("\n")
-                for result in results_books:
-                    if result:
-                        st.markdown(f"### **{result}**")
+                match_found_books = False
+                for result_books in results_books:
+                    if result_books:
+                        if not match_found_books:
+                            st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
+                            match_found_books = True
+                        st.markdown(f"### **{result_books}**")
 
 with tab3:
     st.header("Custom Search")
-    st.write("Use the space below to describe what you are looking for:")
-    custom_prompt = st.text_area("Describe your custom search", height=150, key="custom_prompt", placeholder="Enter your custom search prompt here...")
+    st.write("Customize your search criteria here.")
 
-    generate_custom = st.button("Generate Custom Search", key="generate_custom")
-    if generate_custom and custom_prompt.strip():
-        with st.spinner("Generating results..."):
-            response_custom = get_gemini_pro_text_response(
-                text_model_pro,
-                custom_prompt,
-                generation_config={"temperature": 0.8, "max_output_tokens": 2048},
-            )
-            if response_custom:
-                st.markdown("<h2 style='text-align: center; color: #FF6347;'>You have a match!</h2>", unsafe_allow_html=True)
-                results_custom = response_custom.split("\n")
-                for result in results_custom:
-                    if result:
-                        st.markdown(f"### **{result}**")
